@@ -1,0 +1,6 @@
+    <footer>
+        <!-- Định nghĩa nội dung của footer -->
+        <p>&copy; 2024 My Website. All rights reserved.</p>
+    </footer>
+</body>
+</html>
