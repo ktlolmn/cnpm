@@ -1,6 +1,6 @@
 package cnpm.controller;
 
-import cnpm.model.User;
+import cnpm.model.Account;
 import cnpm.DBUtil.DBUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,9 +30,7 @@ public class UserController {
 
     @RequestMapping("/home")
     public String getUsers(Model model, HttpServletRequest request) {
-        List<User> userList = new ArrayList<>();
-
-        // Kiểm tra xem có cookie "username" hay không
+        List<Account> userList = new ArrayList<>();
         if (hasUsernameCookie(request)) {
             Cookie[] cookies = request.getCookies();
             String username = "";
@@ -42,14 +40,14 @@ public class UserController {
                     break;
                 }
             }
-            model.addAttribute("username", username); // Thêm thông tin username vào model
+            model.addAttribute("username", username);
 
             try {
                 Connection connection = DBUtil.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Users");
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Account");
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    User user = new User();
+                    Account user = new Account();
                     user.setUsername(resultSet.getString("username"));
                     user.setPassword(resultSet.getString("password"));
                     userList.add(user);
@@ -60,7 +58,6 @@ public class UserController {
             model.addAttribute("users", userList);
             return "user/home";
         } else {
-            // Nếu không có cookie "username", chuyển hướng đến trang login
             return "redirect:/login.htm";
         }
     }

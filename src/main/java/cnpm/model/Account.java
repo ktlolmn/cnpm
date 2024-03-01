@@ -2,7 +2,7 @@ package cnpm.model;
 
 import java.sql.Timestamp;
 
-public class User {
+public class Account {
     private int idAccount;
     private int idRole;
     private String username;
@@ -11,7 +11,7 @@ public class User {
     private Timestamp _Create;
     private Timestamp _Update;
 
-    public User( int idAccount, int idRole, String username, String email, String password, Timestamp _Create, Timestamp _Update) {
+    public Account( int idAccount, int idRole, String username, String email, String password, Timestamp _Create, Timestamp _Update) {
         super();
         this.idAccount = idAccount;
         this.idRole = idRole;
@@ -22,7 +22,7 @@ public class User {
         this._Update = _Update;
     }
 
-    public User() {
+    public Account() {
         super();
     }
 

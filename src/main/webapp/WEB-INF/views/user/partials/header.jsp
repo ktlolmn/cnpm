@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <title>My Website</title>
-    <!-- Thêm các thẻ CSS, JavaScript hoặc bất kỳ tài nguyên khác cần thiết -->
 </head>
 <body>
     <header>

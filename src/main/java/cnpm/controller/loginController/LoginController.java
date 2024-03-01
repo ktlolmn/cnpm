@@ -14,7 +14,7 @@ import javax.servlet.http.Cookie;
 import org.mindrot.jbcrypt.BCrypt;
 
 import cnpm.DBUtil.DBUtil;
-import cnpm.model.User;
+import cnpm.model.Account;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,20 +26,19 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLoginForm(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new Account());
         return "login/login";
     }
     
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String showRegisterForm(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new Account());
         return "login/register";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String processLogin(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes, HttpServletResponse response) {
+    public String processLogin(@ModelAttribute("user") Account user, RedirectAttributes redirectAttributes, HttpServletResponse response) {
         if (isValidUser(user.getUsername(), user.getPassword())) {
-            // Lưu thông tin người dùng vào cookie sau khi xác thực thành công
             Cookie cookie = new Cookie("username", user.getUsername());
             response.addCookie(cookie);
             return "redirect:/home.htm";
@@ -50,7 +49,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerUser(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+    public String registerUser(@ModelAttribute("user") Account user, RedirectAttributes redirectAttributes) {
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         if (createUser(user.getUsername(), hashedPassword)) {
             return "redirect:/login.htm";
@@ -63,7 +62,7 @@ public class LoginController {
     private boolean isValidUser(String username, String password) {
         try {
             Connection connection = DBUtil.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT password FROM Users WHERE username = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT password FROM Account WHERE username = ?");
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -80,7 +79,7 @@ public class LoginController {
     private boolean createUser(String username, String password) {
         try {
             Connection connection = DBUtil.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Users (idAccount, idRole, username, password) VALUES (?, ?, ?, ?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Account (idAccount, idRole, username, password) VALUES (?, ?, ?, ?)");
             preparedStatement.setString(1, generateRandomId(connection));
             preparedStatement.setString(2, generateRandomId(connection));
             preparedStatement.setString(3, username);
@@ -104,7 +103,7 @@ public class LoginController {
 
     // Phương thức này sẽ kiểm tra xem một giá trị đã tồn tại trong cơ sở dữ liệu hay chưa
     private boolean checkIdExist(Connection connection, String id) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM Users WHERE idAccount = ? OR idRole = ?");
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM Account WHERE idAccount = ? OR idRole = ?");
         preparedStatement.setString(1, id);
         preparedStatement.setString(2, id);
         ResultSet resultSet = preparedStatement.executeQuery();

@@ -3,8 +3,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@ include file="partials/header.jsp" %>
-
-<!-- Nội dung trang chính -->
 <div>
     <h2>Danh sách người dùng</h2>
     <h1>${username}</h1>
