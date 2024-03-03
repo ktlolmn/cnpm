@@ -6,110 +6,48 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import java.util.UUID;
 
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Cookie;
-import org.mindrot.jbcrypt.BCrypt;
 
-import cnpm.DBUtil.DBUtil;
+import cnpm.DAO.AccountDAO;
 import cnpm.model.Account;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Controller
 public class LoginController {
+	
+	AccountDAO accountDAO = new AccountDAO();
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String showLoginForm(Model model) {
+    public String showLoginForm(Model model, HttpServletResponse response) {
+    	Cookie cookie = new Cookie("username", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         model.addAttribute("user", new Account());
         return "login/login";
     }
     
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String showRegisterForm(Model model) {
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String showLoginFormIndex(Model model, HttpServletResponse response) {
+    	Cookie cookie = new Cookie("username", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         model.addAttribute("user", new Account());
-        return "login/register";
+        return "login/login";
     }
-
+    
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String processLogin(@ModelAttribute("user") Account user, RedirectAttributes redirectAttributes, HttpServletResponse response) {
-        if (isValidUser(user.getUsername(), user.getPassword())) {
+        if (accountDAO.isValidAccount(user.getUsername(), user.getPassword())) {
             Cookie cookie = new Cookie("username", user.getUsername());
+            cookie.setMaxAge(60*60);  //đặt thời gian cho cookies
             response.addCookie(cookie);
             return "redirect:/home.htm";
         } else {
-            redirectAttributes.addFlashAttribute("error", "Invalid username or password");
+            redirectAttributes.addFlashAttribute("error", "Tài khoản hoặc mật khẩu không đúng!");
             return "redirect:/login.htm";
         }
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String registerUser(@ModelAttribute("user") Account user, RedirectAttributes redirectAttributes) {
-        String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-        if (createUser(user.getUsername(), hashedPassword)) {
-            return "redirect:/login.htm";
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Error creating user");
-            return "redirect:/register.htm";
-        }
-    }
-
-    private boolean isValidUser(String username, String password) {
-        try {
-            Connection connection = DBUtil.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT password FROM Account WHERE username = ?");
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                String hashedPassword = resultSet.getString("password");
-                return BCrypt.checkpw(password, hashedPassword);
-            }
-            return false;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private boolean createUser(String username, String password) {
-        try {
-            Connection connection = DBUtil.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Account (idAccount, idRole, username, password) VALUES (?, ?, ?, ?)");
-            preparedStatement.setString(1, generateRandomId(connection));
-            preparedStatement.setString(2, generateRandomId(connection));
-            preparedStatement.setString(3, username);
-            preparedStatement.setString(4, password);
-            int rowsInserted = preparedStatement.executeUpdate();
-            return rowsInserted > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Phương thức này sẽ tạo một GUID mới và kiểm tra xem nó đã tồn tại trong cơ sở dữ liệu hay chưa
-    private String generateRandomId(Connection connection) throws SQLException {
-        String randomId;
-        do {
-            randomId = UUID.randomUUID().toString();
-        } while (checkIdExist(connection, randomId));
-        return randomId;
-    }
-
-    // Phương thức này sẽ kiểm tra xem một giá trị đã tồn tại trong cơ sở dữ liệu hay chưa
-    private boolean checkIdExist(Connection connection, String id) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM Account WHERE idAccount = ? OR idRole = ?");
-        preparedStatement.setString(1, id);
-        preparedStatement.setString(2, id);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        int count = resultSet.getInt(1);
-        return count > 0;
-    }
+    }   
 }
 

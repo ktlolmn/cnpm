@@ -1,7 +1,8 @@
-package cnpm.controller;
+package cnpm.controller.userController;
 
 import cnpm.model.Account;
 import cnpm.DBUtil.DBUtil;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

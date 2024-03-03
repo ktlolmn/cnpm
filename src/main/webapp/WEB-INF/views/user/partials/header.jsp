@@ -13,7 +13,8 @@
             <ul>
                 <li><a href="home.htm">Home</a></li>
                 <li><a href="information.htm">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="login.htm">Log out</a></li>
+                <li><a href="change-password.htm">Change password</a></li>
             </ul>
         </nav>
     </header>

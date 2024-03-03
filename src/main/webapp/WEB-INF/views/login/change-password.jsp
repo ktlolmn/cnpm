@@ -2,8 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Login</title>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
 <style>
 body {
 	font-family: Arial;
@@ -38,7 +39,7 @@ body {
 	color: #ffff;
 }
 
-.login-form input, .login-form button {
+.changepd-form input, .login-form button {
 	width: calc(100% - 50px);
 	margin-bottom: 10px;
 	padding: 12px 10px;
@@ -48,7 +49,7 @@ body {
 	border: 1px solid #ccc;
 }
 
-.login-form button {
+.changepd-form button {
 	width: calc(100% - 29px);
 	padding: 10px;
 	border-radius: 5px;
@@ -60,45 +61,41 @@ body {
 	border: 1px solid #2f2e68;
 }
 
-.login-form button:hover {
+.changepd-form button:hover {
 	background-color: #ffff;
 	color: #000;
 	border: 1px solid #000;
 }
 
-.login-form .forgetTxt{
+.changepd-form .forgetTxt{
 	padding-bottom: 20px; 
 }
 
-
-.forgetTxt a{
-	color: #000;
-}
-
-.login-form .op8{
+.changepd-form .op8{
 	opacity: 0.8;
 }
 </style>
-</head>
 <body>
 	<div class="container">
 		<div class="form-container">
 			<div class="header-form">
-				<h3 class="heading">Đăng nhập</h3>
+				<h3 class="heading">Đổi mật khẩu</h3>
 			</div>
 			<p>${error}</p>
-			<form class="login-form" action="/cnpm/login.htm" method="post">
+			<p>${success}</p>
+			<form class="changepd-form" action="change-password.htm" method="post">
 				<input type="text" name="username" placeholder="Nhập tài khoản..." />
-				<input type="password" name="password"
-					placeholder="Nhập mật khẩu..." />
-				<button type="submit">Đăng nhập</button>
+				<input type="password" name="oPassword"
+					placeholder="Nhập mật khẩu cũ..." />
+				<input type="password" name="new-password"
+					placeholder="Nhập mật khẩu mới..." />
+				<input type="password" name="confirm-password"
+					placeholder="Xác nhận mật khẩu..." />
+				<button type="submit">Gửi</button>
 				<div>
 					<h4 class="op8">
-						Bạn chưa có tài khoản? <a href="register.htm">Đăng ký</a>
+						<a href="login.htm">Đăng nhập</a>
 					</h4>
-				</div>
-				<div class="forgetTxt op8">
-					<a href="forgot-password.htm">Quên mật khẩu?</a>
 				</div>
 			</form>
 		</div>

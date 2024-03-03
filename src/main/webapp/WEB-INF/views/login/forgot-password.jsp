@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Đăng ký tài khoản</title>
+<title>Quên mật khẩu</title>
 <style>
 body {
 	font-family: Arial;
@@ -18,7 +18,7 @@ body {
 form {
 	text-align: center;
 	width: 430px;
-	border: 1px solid #ccc;	
+	border: 1px solid #ccc;
 	border-radius: 6px;
 }
 
@@ -30,12 +30,16 @@ form {
 	background-color: #2f2e68;
 }
 
-.header-form h3{
+.header-form h4 {
 	padding: 18px 0;
 	margin: 0;
 	color: #ffff;
 }
 
+.txtForget{
+	display: flex;
+	margin-left: 30px;
+}
 
 input, button {
 	width: calc(100% - 50px);
@@ -65,26 +69,29 @@ button[type="submit"]:hover {
 	border: 1px solid #000;
 }
 
-.op8{
+.op8 {
 	opacity: 0.8;
+	margin: 0;
 }
 </style>
 </head>
 <body>
-	<form class="registerForm" action="/cnpm/register.htm" method="post">
+	<form class="forgotForm" action="forgot-password.htm" method="post">
 		<div class="header-form">
-			<h3 class="heading">Đăng ký tài khoản</h3>
+			<h4 class="heading">Quên mật khẩu</h4>
 		</div>
-		<p>${error}</p>
-		<input type="text" id="username" name="username" placeholder="Nhập tên tài khoản..." required><br> 
-		<input type="password" id="password" name="password" placeholder="Nhập mật khẩu..." required><br> 
-		<input type="email" id="email" name="email" placeholder="Nhập email..." required><br> 
+		<div class="txtForget">
+			<h5 class="pd-usern">${message} </h5>
+			<h5 class="password">${password}</h5>
+		</div>
+		<input type="text" id="username" name="username"
+			placeholder="Nhập tài khoản của bạn..." required><br>
 		<div>
 			<h4 class="op8">
-				Bạn đã có tài khoản? <a href="login.htm">Đăng nhập</a>
+				<a href="login.htm">Đăng nhập</a>
 			</h4>
 		</div>
-		<button type="submit">Đăng ký</button>
+		<button type="submit">Gửi</button>
 	</form>
 </body>
 </html>
