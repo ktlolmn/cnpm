@@ -53,6 +53,7 @@ public class AccountDAO {
         } while (checkIdExist(connection, randomId));
         return randomId;
     }
+    
     public boolean checkIdExist(Connection connection, String id) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(*) FROM Account WHERE idAccount = ? OR idRole = ?");
         preparedStatement.setString(1, id);
@@ -62,6 +63,7 @@ public class AccountDAO {
         int count = resultSet.getInt(1);
         return count > 0;
     }
+    
     public String generateRandomPassword() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder newPassword = new StringBuilder();
