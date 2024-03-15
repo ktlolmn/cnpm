@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DsMuonPhongHoc {
 	@RequestMapping("/home")
     public String home(ModelMap modelMap) {
-    	return"Components/BoardContent/DsMuonPhongHoc";
+    	return"Home/HomeManager";
     }
 }
